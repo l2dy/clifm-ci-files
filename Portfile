@@ -8,8 +8,13 @@ categories          devel
 platforms           darwin
 license             Permissive
 maintainers         nomaintainer
-
-depends_run port:cmake port:gmake port:readline port:gettext port:libmagic
+                    
+depends_run         port:cmake \
+                    port:gettext \
+                    port:gmake \
+                    port:libmagic \
+                    port:pkgconfig \
+                    port:readline
 
 distfiles
 use_configure no
