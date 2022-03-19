@@ -34,4 +34,7 @@ jobs:
           (cd "$MP_TREE_CATEGORY_DEVEL/.."; sudo portindex)
 
       - name: Generate .mpkg
-        run: sudo port mpkg clifm-bootstrap
+        run: |
+          sudo port mpkg clifm-bootstrap
+          mkdir dist
+          cp -v "$(port work clifm-bootstrap)"/*.mpkg dist/
