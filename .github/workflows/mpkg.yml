@@ -1,0 +1,37 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Package
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: macos-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      - uses: l2dy/setup-macports@v1
+
+      - name: Install Portfile
+        run: |
+          MP_TREE_CATEGORY_DEVEL="$(cd -P $(port dir cmake)/..; pwd)"
+          sudo mkdir "$MP_TREE_CATEGORY_DEVEL/clifm-bootstrap"
+          sudo cp Portfile "$MP_TREE_CATEGORY_DEVEL/clifm-bootstrap"
+          (cd "$MP_TREE_CATEGORY_DEVEL/.."; sudo portindex)
+
+      - name: Generate .mpkg
+        run: sudo port mpkg clifm-bootstrap
